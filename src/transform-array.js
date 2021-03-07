@@ -8,35 +8,33 @@ module.exports = function transform(arr) {
 
   return arr.reduce((accum, item, index, array) => {
 
-    switch(true) {
-
-      case item === "--double-prev":
+      if(item === "--double-prev") {
         accum.push(accum[index - 1]);
         return accum;
+      }
 
-      case item === "--double-next":
+      if(item === "--double-next") {
         accum.push(array[index + 1]);
         return accum;
+      }
 
-      case array[index - 1] === "--discard-next":
-      case array[index + 1] === "--discard-prev":
+      if(array[index - 1] === "--discard-next" || array[index + 1] === "--discard-prev") {
         accum.push(null);
         return accum;
+      }
 
-      default:
-        accum.push(item);
-        return accum;
-    }
+      accum.push(item);
+      return accum;
   },[]).filter((item) => {
 
-    switch(true) {
+    switch(item) {
 
-      case item === null:
-      case item === undefined:
-      case item === "--double-prev":
-      case item === "--double-next":
-      case item === "--discard-next":
-      case item === "--discard-prev":
+      case null:
+      case undefined:
+      case "--double-prev":
+      case "--double-next":
+      case "--discard-next":
+      case "--discard-prev":
         return false;
       default:
         return true;
